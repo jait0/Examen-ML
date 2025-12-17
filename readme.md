@@ -13,7 +13,7 @@ La solución abarca todo el ciclo de vida del modelo bajo la metodología **CRIS
 
 ## Estructura del Proyecto
 
-'''
+```
 Proyecto root/
 │
 ├── data/                         # Fuentes originales (.parquet)
@@ -29,7 +29,7 @@ Proyecto root/
 │
 ├── requirements.txt              # Dependencias del proyecto
 └── README.md                     # Documentación general
-'''
+```
 
 ## Fuentes de Datos
 El sistema procesa información proveniente de tres fuentes clave ubicadas en la carpeta /data:application_.parquet: Datos demográficos e ingresos del solicitante.bureau.parquet: Historial crediticio externo (Buró).bureau_balance.parquet: Detalle mensual de estados de cuenta externos.🛠️ Instalación y RequisitosPython 3.9+Recomendado: Uso de entorno virtual.Bash# Crear entorno virtual
