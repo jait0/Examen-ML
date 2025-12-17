@@ -1,186 +1,49 @@
-Credit Risk Prediction – Machine Learning Pipeline
-Descripción general:
+# Credit Risk Prediction – Machine Learning Pipeline
 
-Este proyecto desarrolla una solución completa de Machine Learning para predecir la probabilidad de impago (default) de clientes solicitantes de crédito, utilizando información financiera y crediticia histórica.
+Este proyecto desarrolla una solución profesional de Machine Learning para predecir la probabilidad de impago (*default*) de clientes solicitantes de crédito, utilizando información financiera y crediticia histórica.
 
-La solución abarca todo el ciclo de vida del modelo:
+La solución abarca todo el ciclo de vida del modelo bajo la metodología **CRISP-DM**:
+* Análisis y preparación de datos.
+* Eliminación de ruido mediante **clustering no supervisado (DBSCAN)**.
+* Entrenamiento de un modelo supervisado (**Regresión Logística**).
+* Evaluación del desempeño y métricas de negocio.
+* Despliegue mediante una **API REST** escalable.
 
-Análisis y preparación de datos
+---
 
-Eliminación de ruido mediante clustering no supervisado
+## Estructura del Proyecto
 
-Entrenamiento de un modelo supervisado
-
-Evaluación del desempeño
-
-Despliegue mediante una API REST
-
-El sistema permite estimar el riesgo crediticio de un cliente y entregar una decisión automática basada en reglas de negocio.
-
-Fuentes de datos
-
-El proyecto utiliza tres archivos en formato Parquet, los cuales contienen información crediticia y financiera:
-
-application_.parquet
-Información principal del solicitante (ingresos, monto solicitado, edad, empleo, etc.)
-
-bureau.parquet
-Historial crediticio del cliente proveniente de burós de crédito.
-
-bureau_balance.parquet
-Detalle mensual del estado de los créditos reportados en el buró.
-
-Estos archivos deben ubicarse en la carpeta /data.
-
-Estructura del proyecto
+```text
 Proyecto root/
 │
-├── data/
-│   ├── application_.parquet
-│   ├── bureau.parquet
-│   └── bureau_balance.parquet
+├── data/                         # Fuentes originales (.parquet)
+├── data_output/                  # Datasets procesados para entrenamiento
+├── models/                       # Artefactos serializados (.pkl)
+├── reports/                      # Gráficos y métricas de evaluación
 │
-├── data_output/
-│   ├── X_train_final.csv
-│   └── y_train.csv
+├── 01_data_understanding/        # Calibración de parámetros (DBSCAN)
+├── 02_data_preparation/          # ETL e integración de fuentes
+├── 03_modeling/                  # Entrenamiento del modelo supervisado
+├── 04_evaluation/                # Scripts de métricas y validación
+├── 05_deployment/                # API REST con FastAPI y Schemas
 │
-├── models/  (o artifacts/)
-│   ├── logistic_model.pkl
-│   └── scaler.pkl
-│
-├── reports/
-│   ├── confusion_matrix.png
-│   └── roc_curve.png
-│
-├── 01_data_understanding/
-│   └── dbscan_calibration.py
-│
-├── 02_data_preparation/
-│   └── integrate_and_clean.py
-│
-├── 03_modeling/
-│   └── train_model.py
-│
-├── 04_evaluation/
-│   └── evaluate_model.py
-│
-├── 05_deployment/
-│   ├── app.py
-│   └── schemas.py
-│
-├── requirements.txt
-└── README.md
+├── requirements.txt              # Dependencias del proyecto
+└── README.md                     # Documentación general
+Fuentes de DatosEl sistema procesa información proveniente de tres fuentes clave ubicadas en la carpeta /data:application_.parquet: Datos demográficos e ingresos del solicitante.bureau.parquet: Historial crediticio externo (Buró).bureau_balance.parquet: Detalle mensual de estados de cuenta externos.🛠️ Instalación y RequisitosPython 3.9+Recomendado: Uso de entorno virtual.Bash# Crear entorno virtual
+python -m venv venv
 
-Requisitos:
-
-Python 3.9 o superior
-
-Entorno virtual recomendado
-
-Instalación de dependencias:
-
-pip install -r requirements.txt
-
-Ejecución paso a paso (desde cero)
-1) Activar entorno virtual
+# Activar (Windows)
 venv\Scripts\activate
 
-2) Análisis y calibración de DBSCAN
-
-Este paso identifica y calibra los parámetros del clustering para detección de ruido.
-
-python 01_data_understanding/dbscan_calibration.py
-
-3) Integración, limpieza y selección de variables
-
-Integra los tres archivos .parquet
-
-Selecciona variables relevantes
-
-Aplica DBSCAN para eliminar outliers
-
-Genera los datasets finales para modelado
-
-python 02_data_preparation/integrate_and_clean.py
-
-
-Salida:
-
-data_output/X_train_final.csv
-
-data_output/y_train.csv
-
-4) Entrenamiento del modelo supervisado
-
-Escalado de variables
-
-Entrenamiento de Regresión Logística
-
-Guardado del modelo y scaler
-
-python 03_modeling/train_model.py
-
-
-Salida:
-
-models/logistic_model.pkl
-
-models/scaler.pkl
-
-5) Evaluación del modelo
-
-Genera métricas y gráficos de desempeño:
-
-python 04_evaluation/evaluate_model.py
-
-
-Salida:
-
-Curva ROC
-
-Matriz de confusión
-
-Métricas de clasificación
-
-6) Despliegue de la API
-
-Levantar la API REST con FastAPI:
-
-uvicorn 05_deployment.app:app --reload
-
-
-API disponible en:
-
-http://127.0.0.1:8000
-
-
-Documentación automática (Swagger):
-
-http://127.0.0.1:8000/docs
-
-Endpoint principal
-POST /evaluate_risk
-
-Recibe información del cliente y retorna la probabilidad de impago junto a una decisión automática.
-
-Respuesta:
-
-{
+# Instalar dependencias
+pip install -r requirements.txt
+Ejecución del Pipeline (Paso a Paso)1. Calibración de DBSCANIdentifica y calibra los parámetros para la detección de ruido y outliers.Bashpython 01_data_understanding/dbscan_calibration.py
+2. Integración y Limpieza (ETL)Combina los archivos Parquet, selecciona variables y aplica DBSCAN para eliminar ruido.Bashpython 02_data_preparation/integrate_and_clean.py
+3. Entrenamiento del ModeloAplica escalado de variables y entrena la Regresión Logística.Bashpython 03_modeling/train_model.py
+4. Evaluación de DesempeñoGenera la Curva ROC, Matriz de Confusión y reporte de clasificación en la carpeta /reports.Bashpython 04_evaluation/evaluate_model.py
+Despliegue de la APIEl sistema utiliza FastAPI para servir el modelo en tiempo real.Levantar el servicio:Bashuvicorn 05_deployment.app:app --reload
+API Local: http://127.0.0.1:8000Documentación Interactiva (Swagger): http://127.0.0.1:8000/docsEndpoint Principal: POST /evaluate_riskRecibe la información del cliente y retorna el nivel de riesgo.Ejemplo de respuesta:JSON{
   "probabilidad_incumplimiento": "42.35%",
   "decision": "Revisar manualmente"
 }
-
-Decisión de negocio
-Probabilidad	Decisión
-≥ 70%	Rechazar
-40% – 69%	Revisión manual
-< 40%	Aprobar
-Consideraciones técnicas
-
-DBSCAN se utiliza solo en la etapa de preparación, no en producción.
-
-El scaler entrenado se reutiliza en la API para asegurar coherencia.
-
-El modelo no requiere reentrenamiento para cada predicción.
-
-La API es completamente desacoplada del proceso de entrenamiento.
+Lógica de Decisión de NegocioEl sistema automatiza la toma de decisiones basada en los siguientes umbrales:Probabilidad (P)Decisión$P \geq 70\%$Rechazar$40\% \leq P < 70\%$Revisión Manual$P < 40\%$Aprobar💡 Consideraciones TécnicasDBSCAN: Se utiliza exclusivamente en la etapa de preparación (limpieza) para mejorar la calidad del entrenamiento, no se requiere en producción.Consistencia: El scaler entrenado se reutiliza en la API para garantizar que los datos de entrada sigan la misma distribución.Desacoplamiento: La API es independiente del proceso de entrenamiento, permitiendo actualizaciones del modelo sin afectar el servicio.
