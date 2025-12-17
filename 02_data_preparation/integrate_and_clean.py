@@ -95,9 +95,9 @@ def integrate_and_clean():
     X_scaled = scaler.fit_transform(X)
 
     D = X_scaled.shape[1]
-    MIN_PTS = round(D * 1.25)
+    MIN_PTS = round(D * 3)
 
-    dbscan = DBSCAN(eps=1.24 , min_samples=MIN_PTS)
+    dbscan = DBSCAN(eps=1.18 , min_samples=MIN_PTS)
     labels = dbscan.fit_predict(X_scaled)
 
     df["DBSCAN_LABEL"] = labels
