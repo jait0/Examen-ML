@@ -60,10 +60,10 @@ def evaluate_risk(data: ClientData):
 
     # 5 Regla de negocio
     decision = (
-        "Rechazar" if prob >= 0.70
-        else "Revisar manualmente" if prob >= 0.40
-        else "Aprobar"
-    )
+    "Rechazar" if prob >= 0.50          # Antes 0.70 - Ahora rechazamos con riesgo medio
+    else "Revisar manualmente" if prob >= 0.20 # Antes 0.40 - Ahora revisamos desde riesgo bajo
+    else "Aprobar"                      # Solo aprobamos si el riesgo es < 20%
+)
 
     return {
         "probabilidad_incumplimiento": f"{prob * 100:.2f}%", 

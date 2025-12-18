@@ -71,11 +71,11 @@ Ejemplo de respuesta:
 }
 ```
 ## Lógica de Decisión de Negocio
-≥70%,Rechazar
+≥50%,Rechazar
 
-40%−69%,Revisión Manual
+20%−50%,Revisión Manual
 
-<40%,Aprobar
+<20%,Aprobar
 
 ## Consideraciones Técnicas
 Pipeline desacoplado: El proceso de entrenamiento genera archivos .pkl que la API consume de forma independiente.
